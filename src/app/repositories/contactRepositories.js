@@ -4,23 +4,22 @@ const db = require('../../database');
 let contacts = require('../mocks/index');
 
 class ContactRepositories {
-  findAll() {
+  async findAll() {
     // Lista TODOS os contatos
-    return new Promise((resolve) => resolve(contacts));
+    const rows = await db.query('SELECT * FROM contacts');
+    return rows;
   }
 
-  findById(id) {
+  async findById(id) {
     // Mostra UM contato
-    return new Promise((resolve) => resolve(
-      contacts.find((item) => item.id === id),
-    ));
+    const [row] = await db.query('SELECT name, email, phone FROM contacts WHERE id = $1', [id]);
+    return row;
   }
 
-  findByEmail(email) {
+  async findByEmail(email) {
     // Mostra UM contato
-    return new Promise((resolve) => resolve(
-      contacts.find((item) => item.email === email),
-    ));
+    const [row] = await db.query('SELECT name, email, phone FROM contacts WHERE email = $1', [email]);
+    return row;
   }
 
   delete(id) {
