@@ -1,12 +1,11 @@
 // const { v4 } = require('uuid');
 const db = require('../../database');
 
-let contacts = require('../mocks/index');
-
 class ContactRepositories {
-  async findAll() {
+  async findAll(orderBy = 'ASC') {
+    const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     // Lista TODOS os contatos
-    const rows = await db.query('SELECT * FROM contacts');
+    const rows = await db.query(`SELECT * FROM contacts ORDER BY name ${direction}`);
     return rows;
   }
 
@@ -22,12 +21,10 @@ class ContactRepositories {
     return row;
   }
 
-  delete(id) {
+  async delete(id) {
     // Deletar UM contato
-    return new Promise((resolve) => {
-      contacts = contacts.filter((item) => item.id !== id);
-      resolve();
-    });
+    const deleteOp = await db.query('DELETE FROM contacts WHERE id = $1', [id]);
+    return deleteOp;
   }
 
   async create({
@@ -42,23 +39,18 @@ class ContactRepositories {
     return row;
   }
 
-  update(id, {
+  async update(id, {
     name, email, number, category_id,
   }) {
     // atualiza UM contato
-    return new Promise((resolve) => {
-      const updateContact = {
-        id,
-        name,
-        email,
-        number,
-        category_id,
-      };
+    const [row] = await db.query(`UPDATE contacts
+    SET name = $1, email = $2, phone=$3, category_id =$4
+    WHERE id = $5
+    RETURNING *`, [
+      name, email, number, category_id,
+      id]);
 
-      contacts = contacts.map((item) => (item.id === id ? updateContact : item));
-
-      resolve(updateContact);
-    });
+    return row;
   }
 }
 module.exports = new ContactRepositories();
