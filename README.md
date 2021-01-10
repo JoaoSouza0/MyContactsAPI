@@ -15,12 +15,13 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 Para usar MyContactsAPI, siga estas etapas:
 
 - Clonar o repositório
--
-- Caso não tenha o banco de dados instalado digitar o comando no terminal **git checkout Versão-0.1**
+
+- Caso não tenha o banco de dados instalado
+- digitar o comando no terminal **git checkout Versão-0.1**
 - Digitar o comando **npm i** para instalar as dependencias do projeto
 - Digitar o comando **npm run dev** para rodar o projeto
--
-- Caso Tenha o banco intalado
+
+- Caso tenha o banco de dados  v intalado
 - Executar o Schema para a criação das tabelas
 - Digitar o comando **npm i** para instalar as dependencias do projeto
 - Digitar o comando **npm run dev** para rodar o projeto
