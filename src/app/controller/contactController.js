@@ -19,7 +19,7 @@ class ContactController {
       return response.status(404).json({ error: 'user not found' });
     }
 
-    response.json(contact);
+    return response.json(contact);
   }
 
   async store(request, response) {
